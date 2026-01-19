@@ -1,0 +1,11 @@
+torch
+transformers
+pillow
+opencv-python
+requests
+python-dotenv
+numpy
+fastapi
+uvicorn[standard]
+python-multipart
+mediapipe
