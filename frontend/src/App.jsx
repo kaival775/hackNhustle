@@ -1,0 +1,24 @@
+import Dashboard from './components/Dashboard'
+import Translator from './components/Translator'
+import SignToWord from './components/SignToWord'
+import UserProfile from './components/UserProfile'
+import Login from './components/Login'
+import Signup from './components/Signup'
+import { Routes, Route } from 'react-router-dom'
+import './index.css'
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/" element={<Dashboard />} />
+      <Route path="/translate" element={<Translator />} />
+      <Route path="/sign-to-word" element={<SignToWord />} />
+      <Route path="/profile" element={<UserProfile />} />
+      <Route path="/stats" element={<Dashboard />} />
+    </Routes>
+  )
+}
+
+export default App
