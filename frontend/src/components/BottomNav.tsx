@@ -11,10 +11,15 @@ export default function BottomNav() {
           <span className="material-symbols-outlined text-[26px] font-medium group-hover:scale-110 transition-transform">home</span>
           <span className={`w-1 h-1 rounded-full ${location.pathname === '/' ? 'bg-primary' : 'bg-transparent'}`} />
         </button>
-        <button onClick={() => navigate('/stats')} className={`flex flex-col items-center justify-center gap-1 w-12 group transition-colors ${location.pathname === '/stats' ? 'text-primary' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}>
-          <span className="material-symbols-outlined text-[26px] group-hover:scale-110 transition-transform">bar_chart</span>
-          <span className={`w-1 h-1 rounded-full ${location.pathname === '/stats' ? 'bg-primary' : 'bg-transparent'}`} />
+        <button onClick={() => navigate('/practice')} className={`flex flex-col items-center justify-center gap-1 w-12 group transition-colors ${location.pathname === '/practice' ? 'text-primary' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}>
+          <span className="material-symbols-outlined text-[26px] group-hover:scale-110 transition-transform">school</span>
+          <span className={`w-1 h-1 rounded-full ${location.pathname === '/practice' ? 'bg-primary' : 'bg-transparent'}`} />
         </button>
+        <button onClick={() => navigate('/tracing')} className={`flex flex-col items-center justify-center gap-1 w-12 group transition-colors ${location.pathname === '/tracing' ? 'text-primary' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}>
+          <span className="material-symbols-outlined text-[26px] group-hover:scale-110 transition-transform">draw</span>
+          <span className={`w-1 h-1 rounded-full ${location.pathname === '/tracing' ? 'bg-primary' : 'bg-transparent'}`} />
+        </button>
+          
         <button onClick={() => navigate('/profile')} className={`flex flex-col items-center justify-center gap-1 w-12 group transition-colors ${location.pathname === '/profile' ? 'text-primary' : 'text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300'}`}>
           <span className="material-symbols-outlined text-[26px] group-hover:scale-110 transition-transform">person</span>
           <span className={`w-1 h-1 rounded-full ${location.pathname === '/profile' ? 'bg-primary' : 'bg-transparent'}`} />
