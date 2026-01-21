@@ -8,11 +8,11 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
+android/
 dist
 dist-ssr
 *.local
 
-<<<<<<< HEAD
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -23,7 +23,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-=======
 # Scrapy stuff:
 .scrapy
 
@@ -178,4 +177,3 @@ __marimo__/
 /api_test
 .DS_Store
 /appha
->>>>>>> abad4ab0f227feef882b6f17fcb77ece3fb1d0de
