@@ -1,11 +1,14 @@
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
+import Avatar3D from './Avatar3D';
 
 export default function Translator() {
   const navigate = useNavigate();
   const [textInput, setTextInput] = useState('');
   const [showTextInput, setShowTextInput] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const avatarRef = useRef(null);
   const {
     transcript,
     listening,
@@ -16,6 +19,11 @@ export default function Translator() {
   const handleMicClick = () => {
     if (listening) {
       SpeechRecognition.stopListening();
+      if (transcript && avatarRef.current) {
+        setIsAnimating(true);
+        avatarRef.current.performSign(transcript);
+        setTimeout(() => setIsAnimating(false), 3000);
+      }
     } else {
       resetTranscript();
       setTextInput('');
@@ -29,6 +37,15 @@ export default function Translator() {
       SpeechRecognition.stopListening();
     }
     setShowTextInput(!showTextInput);
+  };
+
+  const handleStartAnimation = () => {
+    const text = textInput || transcript;
+    if (text && avatarRef.current) {
+      setIsAnimating(true);
+      avatarRef.current.performSign(text);
+      setTimeout(() => setIsAnimating(false), 3000);
+    }
   };
 
   const handleReset = () => {
@@ -115,36 +132,23 @@ export default function Translator() {
       </div>
 
       {/* Bottom Half: Output & Avatar Area */}
-      <div className="flex-[1.2] bg-gradient-to-b from-teal-50 to-teal-100 dark:from-background-dark dark:to-[#051a18] relative flex flex-col w-full -mt-8 pt-[9rem] rounded-t-[3rem] shadow-inner overflow-hidden">
-        {/* Avatar Loading State */}
+      <div className="flex-[1.2] bg-gradient-to-b from-teal-50 to-teal-100 dark:from-background-dark dark:to-[#051a18] relative flex flex-col w-full -mt-8 pt-24 rounded-t-[3rem] shadow-inner overflow-hidden">
+        {/* Avatar Area */}
         <div className="flex-1 flex flex-col items-center justify-center relative w-full">
-          {/* 3D Avatar Placeholder Container */}
-          <div className="relative w-64 h-80 flex items-center justify-center">
-            {/* Abstract geometric background for depth */}
-            <div className="absolute bottom-0 w-48 h-12 bg-teal-900/10 dark:bg-teal-500/10 rounded-[100%] blur-xl transform scale-y-50" />
-            {/* Skeleton Loader Body Shape */}
-            <div className="w-40 h-72 bg-gradient-to-t from-teal-200/50 to-teal-100/50 dark:from-teal-800/30 dark:to-teal-900/30 rounded-[3rem] animate-pulse flex flex-col items-center relative overflow-hidden backdrop-blur-sm border border-white/20">
-              {/* Shim effect */}
-              <div className="absolute inset-0 -translate-x-full animate-[shimmer_2s_infinite] bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-              {/* Head */}
-              <div className="w-16 h-20 bg-teal-300/40 dark:bg-teal-600/40 rounded-[2rem] mt-6 mb-2" />
-              {/* Torso */}
-              <div className="w-24 h-28 bg-teal-300/40 dark:bg-teal-600/40 rounded-[2rem] mb-2" />
-              {/* Arms Area */}
-              <div className="flex gap-2">
-                <div className="w-6 h-16 bg-teal-300/30 dark:bg-teal-600/30 rounded-full" />
-                <div className="w-6 h-16 bg-teal-300/30 dark:bg-teal-600/30 rounded-full" />
-              </div>
-            </div>
+          {/* 3D Avatar Container - Fixed dimensions */}
+          <div className="relative w-full h-96 flex items-center justify-center">
+            <Avatar3D ref={avatarRef} />
           </div>
 
           {/* Floating Status Card */}
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mt-12">
-            <div className="bg-white/80 dark:bg-black/60 backdrop-blur-md border border-white/40 dark:border-white/10 px-6 py-3 rounded-xl shadow-lg flex items-center gap-3">
-              <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
-              <p className="text-slate-800 dark:text-slate-100 text-sm font-semibold whitespace-nowrap">Sign Interpretation Loading...</p>
+          {/* {isAnimating && (
+            <div className="absolute top-[100px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 mt-12">
+              <div className="bg-white/80 dark:bg-black/60 backdrop-blur-md border border-white/40 dark:border-white/10 px-6 py-3 rounded-xl shadow-lg flex items-center gap-3">
+                <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+                <p className="text-slate-800 dark:text-slate-100 text-sm font-semibold whitespace-nowrap">Performing Sign Language...</p>
+              </div>
             </div>
-          </div>
+          )} */}
         </div>
 
         {/* Footer Controls */}
@@ -159,21 +163,21 @@ export default function Translator() {
             </button>
             {/* Divider */}
             <div className="w-px h-8 bg-slate-300/50 dark:bg-white/10" />
+            {/* Start Animation */}
+            <button onClick={handleStartAnimation} disabled={!displayText} className="flex flex-1 flex-col items-center justify-center gap-1 py-2 rounded-xl hover:bg-white/50 dark:hover:bg-white/10 transition-colors group disabled:opacity-50">
+              <div className="p-2 rounded-full bg-transparent group-hover:bg-primary/10 transition-colors">
+                <span className="material-symbols-outlined text-slate-600 dark:text-slate-300 text-2xl group-hover:text-primary">play_arrow</span>
+              </div>
+              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Play</span>
+            </button>
+            {/* Divider */}
+            <div className="w-px h-8 bg-slate-300/50 dark:bg-white/10" />
             {/* Reset */}
             <button onClick={handleReset} className="flex flex-1 flex-col items-center justify-center gap-1 py-2 rounded-xl hover:bg-white/50 dark:hover:bg-white/10 transition-colors group">
               <div className="p-2 rounded-full bg-transparent group-hover:bg-primary/10 transition-colors">
                 <span className="material-symbols-outlined text-slate-600 dark:text-slate-300 text-2xl group-hover:text-primary">replay</span>
               </div>
               <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Reset</span>
-            </button>
-            {/* Divider */}
-            <div className="w-px h-8 bg-slate-300/50 dark:bg-white/10" />
-            {/* Slow Motion */}
-            <button className="flex flex-1 flex-col items-center justify-center gap-1 py-2 rounded-xl hover:bg-white/50 dark:hover:bg-white/10 transition-colors group">
-              <div className="p-2 rounded-full bg-transparent group-hover:bg-primary/10 transition-colors">
-                <span className="material-symbols-outlined text-slate-600 dark:text-slate-300 text-2xl group-hover:text-primary">speed</span>
-              </div>
-              <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">Speed</span>
             </button>
           </div>
         </div>

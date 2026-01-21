@@ -4,6 +4,8 @@ import SignToWord from './components/SignToWord'
 import UserProfile from './components/UserProfile'
 import Login from './components/Login'
 import Signup from './components/Signup'
+import Practice from './components/Practice'
+import TracingPad from './components/TracingPad'
 import { Routes, Route } from 'react-router-dom'
 import './index.css'
 
@@ -15,6 +17,8 @@ function App() {
       <Route path="/" element={<Dashboard />} />
       <Route path="/translate" element={<Translator />} />
       <Route path="/sign-to-word" element={<SignToWord />} />
+      <Route path="/practice" element={<Practice />} />
+      <Route path="/tracing" element={<TracingPad />} />
       <Route path="/profile" element={<UserProfile />} />
       <Route path="/stats" element={<Dashboard />} />
     </Routes>
